@@ -1,13 +1,16 @@
 package application;
 	
-import animation.AnimatedImage;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
@@ -25,32 +28,27 @@ public class Main extends Application {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
 		root.getChildren().add(canvas);
-		
-		AnimatedImage ufo = new AnimatedImage();
-		Image[] imageArray = new Image[6];
-		
-		imageArray[1] = new Image( "earth.png" );
-		imageArray[2] = new Image( "space.jpeg" );
-		imageArray[3] = new Image( "sun.png" );
-		
-		ufo.frames = imageArray;
-		ufo.duration = 0.100;
+	    
+	    gc.setFill(Color.GREEN);
+	    gc.setStroke(Color.BLACK);
+	    gc.setLineWidth(2);
+	    Font theFont = Font.font("Calibri", FontWeight.BOLD, 78);
+	    gc.setFont(theFont);
 		
 		final long startNanoTime = System.nanoTime();
 		
-		
-		new AnimationTimer(){
-			
-			public void handle(long currentNanoTime) {
-				double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+
+			@Override
+			public void handle(KeyEvent e) {
 				
-				gc.drawImage( ufo.getFrame(t), 0, 25 ); 
-				
-				System.out.println(t);
-				
+				gc.clearRect(0, 0, 520, 520);
+				gc.fillText(e.getCode().toString(),260,260);
+				gc.strokeText(e.getCode().toString(),260,260);
 			}
 			
-		}.start();
+		});
+		
 		
 		theStage.show();
 	}
